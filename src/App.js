@@ -1,15 +1,32 @@
-import React from 'react';
+import React from "react";
+import { connect } from "react-redux";
 
-function App() {
+import Search from "./components/Search";
+import MovieList from "./components/MovieList";
+import Popup from "./components/Popup";
+import { closePopup } from "./actions/popupAction";
+
+const App = ({ show, selected, closePopup }) => {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          MOVIE
-        </p>
+        <h1>Movies database</h1>
+        <main>
+          <Search />
+          {show ? (
+            <Popup selected={selected} closePopup={closePopup}/>
+          ) : (
+            <MovieList  />
+          )}
+        </main>
       </header>
     </div>
   );
-}
+};
 
-export default App;
+const mapStateToProps = state => ({
+  show: state.popup.show,
+  selected: state.popup.selected
+});
+
+export default connect(mapStateToProps, { closePopup })(App);
